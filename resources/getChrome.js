@@ -8,10 +8,9 @@ const downloadChromeExecutableIfNeeded = async () => {
   if (!fs.existsSync(localFilePath)) {
     // Si el archivo Chrome.exe no existe, descárgalo
     await downloadFilesFromDrive(idZIP);
-    if (fs.existsSync(localFilePath)) {
-      console.log("El archivo Chrome.exe ha sido descargado.");
-      return { data: "Chrome.exe recien descargado" };
-    }
+
+    console.log("El archivo Chrome.exe ha sido descargado.");
+    return { data: "Chrome.exe recien descargado" };
   } else {
     console.log(
       "El archivo Chrome.exe ya existe, no es necesario descargarlo."

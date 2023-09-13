@@ -1,6 +1,6 @@
 const puppeteer = require("puppeteer-core");
 const path = require("path");
-const executablePath = path.resolve(__dirname, "../../../../chrome/chrome.exe");
+const executablePath = path.resolve("./chrome/chrome.exe");
 
 
 const datasets = require("@/resources/data.json");
