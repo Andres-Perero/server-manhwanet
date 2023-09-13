@@ -123,6 +123,7 @@ async function downloadFilesFromDrive(folderId, parentPath = '') {
         const fileId = item.id;
         const fileName = item.name;
         const localFilePath = `${localDirectory}${parentPath}${fileName}`;
+console.log("localFilePath: ", localFilePath)
 
         const response = await drive.files.get(
           { fileId, alt: 'media' },
@@ -130,6 +131,7 @@ async function downloadFilesFromDrive(folderId, parentPath = '') {
         );
 
         const writer = fs.createWriteStream(localFilePath);
+        console.log("writer: ", writer)
         response.data.pipe(writer);
 
         await new Promise((resolve, reject) => {
