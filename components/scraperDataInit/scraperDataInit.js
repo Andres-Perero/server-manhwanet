@@ -1,7 +1,7 @@
 //const executablePath = path.resolve(  __dirname,  "../../../../Chrome/chrome-win.zip");
 const puppeteer = require("puppeteer-core");
 const path = require("path");
-const executablePath = path.resolve(__dirname, "../../../../Chrome/chrome.exe");
+const executablePath = path.resolve(__dirname, "../../../../chrome/chrome.exe");
 
 const dataset = require("../../resources/data.json");
 const scrapeData = async () => {
