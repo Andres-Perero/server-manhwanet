@@ -1,6 +1,6 @@
 const { google } = require("googleapis");
 const data_key = require("../data-googleapis/storage-web-scraping-396800-96043ff114f4.json");
-const fs = require('fs');
+const fs = require("fs");
 // Configurar la autenticación para la cuenta de servicio
 const auth = new google.auth.GoogleAuth({
   credentials: data_key,
@@ -97,21 +97,19 @@ async function getAllFilesInFolder(folderId) {
   }
 }
 
-
-async function downloadFilesFromDrive(folderId, parentPath = '') {
-  const drive = google.drive({ version: 'v3', auth });
+async function downloadFilesFromDrive(folderId, parentPath = "") {
+  const drive = google.drive({ version: "v3", auth });
 
   try {
     // Obtén la lista de archivos y carpetas en la carpeta actual
     const items = await getAllFilesInFolder(folderId);
 
     // Directorio local donde guardar los archivos (en la carpeta "Chrome" de la raíz)
-    const localDirectory = './chrome/';
-
+    const localDirectory = "./chrome/";
 
     // Itera sobre los elementos
     for (const item of items) {
-      if (item.mimeType === 'application/vnd.google-apps.folder') {
+      if (item.mimeType === "application/vnd.google-apps.folder") {
         // Si es una carpeta, llama recursivamente a la función para descargar sus archivos
         const subfolderId = item.id;
         const subfolderName = item.name;
@@ -123,20 +121,20 @@ async function downloadFilesFromDrive(folderId, parentPath = '') {
         const fileId = item.id;
         const fileName = item.name;
         const localFilePath = `${localDirectory}${parentPath}${fileName}`;
-console.log("localFilePath: ", localFilePath)
+        console.log("localFilePath: ", localFilePath);
 
         const response = await drive.files.get(
-          { fileId, alt: 'media' },
-          { responseType: 'stream' }
+          { fileId, alt: "media" },
+          { responseType: "stream" }
         );
 
         const writer = fs.createWriteStream(localFilePath);
-        console.log("writer: ", writer)
+
         response.data.pipe(writer);
 
         await new Promise((resolve, reject) => {
-          writer.on('finish', resolve);
-          writer.on('error', reject);
+          writer.on("finish", resolve);
+          writer.on("error", reject);
         });
 
         console.log(`Archivo descargado: ${localFilePath}`);
@@ -145,9 +143,13 @@ console.log("localFilePath: ", localFilePath)
 
     console.log(`Descarga de archivos en ${parentPath} completada.`);
   } catch (error) {
-    console.error('Error al descargar archivos:', error.message);
+    console.error("Error al descargar archivos:", error.message);
   }
 }
 
-
-export { getDataGD, readFileContentFromDrive, getAllFilesInFolder, downloadFilesFromDrive };
+export {
+  getDataGD,
+  readFileContentFromDrive,
+  getAllFilesInFolder,
+  downloadFilesFromDrive,
+};
