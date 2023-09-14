@@ -1,7 +1,7 @@
 {
     "builds": [
       {
-        "src": "vercel-build.js",
+        "src": "next.config.js",
         "use": "@vercel/node"
       }
     ],
