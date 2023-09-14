@@ -1,8 +1,8 @@
 
 const puppeteer = require("puppeteer-core");
 const path = require("path");
-//const executablePath = path.resolve("./chrome/chrome.exe");
-const executablePath = path.resolve("/var/task/chrome/chrome.exe");
+const executablePath = path.resolve("./chrome/chrome.exe");
+//const executablePath = path.resolve("/var/task/chrome/chrome.exe");
 const maxRetries = 3; // Número máximo de reintentos
 
 const scraperSerieDetailChapter = async (urlChapter) => {

@@ -1,8 +1,8 @@
 //const executablePath = path.resolve(  __dirname,  "../../../../Chrome/chrome-win.zip");
 const puppeteer = require("puppeteer-core");
 const path = require("path");
-//const executablePath = path.resolve("./chrome/chrome.exe");
-const executablePath = path.resolve("/var/task/chrome/chrome.exe");
+const executablePath = path.resolve("./chrome/chrome.exe");
+//const executablePath = path.resolve("/var/task/chrome/chrome.exe");
 const dataset = require("../../resources/data.json");
 const scrapeData = async () => {
   const maxRetries = 3; // Número máximo de reintentos

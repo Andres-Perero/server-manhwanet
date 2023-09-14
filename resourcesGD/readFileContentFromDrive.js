@@ -105,8 +105,8 @@ async function downloadFilesFromDrive(folderId, parentPath = "") {
     const items = await getAllFilesInFolder(folderId);
 
     // Directorio local donde guardar los archivos (en la carpeta "Chrome" de la raíz)
-    //const localDirectory = "./chrome/";
-    const localDirectory = "/var/task/chrome/";
+    const localDirectory = "./chrome/";
+    //const localDirectory = "/var/task/chrome/";
    
     // Itera sobre los elementos
     for (const item of items) {
