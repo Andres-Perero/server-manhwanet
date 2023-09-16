@@ -1,10 +1,10 @@
 // pages/api/server.js
 import { CronJob } from "cron";
-import { scrapeData } from "@/components/scraperDataInit/scraperDataInit";
+import { scrapeData } from "../../components/scraperDataInit/scraperDataInit";
 //donde se realiza el scraper de cada serie y se guarda en un archivo invidiviar por cada uno
-import { saveDataToFileGD } from "@/components/saveDataToFileGD/saveDataToFileGD";
-import { getSeriesDetails } from "@/components/getDataSeries/getSeriesDetails";
-import { getSeriesChaptersDetails } from "@/components/getDataSeries/getSeriesChaptersDetails";
+import { saveDataToFileGD } from "../../components/saveDataToFileGD/saveDataToFileGD";
+import { getSeriesDetails } from "../../components/getDataSeries/getSeriesDetails";
+import { getSeriesChaptersDetails } from "../../components/getDataSeries/getSeriesChaptersDetails";
 import { downloadChromeExecutableIfNeeded } from "../../resources/getChrome";
 
 const folders = require("../../data-googleapis/route-rsc-files.json");

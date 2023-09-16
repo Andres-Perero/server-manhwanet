@@ -1,14 +1,14 @@
-import { saveDataToFileGD } from "@/components/saveDataToFileGD/saveDataToFileGD";
-import { scrapeData } from "@/components/scraperDataInit/scraperDataInit";
-import { getSeriesDetails } from "@/components/getDataSeries/getSeriesDetails";
-import { getSeriesChaptersDetails } from "@/components/getDataSeries/getSeriesChaptersDetails";
+import { saveDataToFileGD } from "../../components/saveDataToFileGD/saveDataToFileGD";
+import { scrapeData } from "../../components/scraperDataInit/scraperDataInit";
+import { getSeriesDetails } from "../../components/getDataSeries/getSeriesDetails";
+import { getSeriesChaptersDetails } from "../../components/getDataSeries/getSeriesChaptersDetails";
 import { downloadChromeExecutableIfNeeded } from "../../resources/getChrome";
 
 const folders = require("../../data-googleapis/route-rsc-files.json");
 const rsc_library = require("../../resources/library.json");
 
 export default async function handler(req, res) {
-  if (req.method !== "GET") {
+  if (req.method !== "POST") {
     return res.status(405).end(); // Método no permitido
   }
 

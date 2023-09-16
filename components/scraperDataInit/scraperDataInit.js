@@ -5,7 +5,7 @@ const executablePath = path.resolve("./chrome/chrome.exe");
 //const executablePath = path.resolve("/var/task/chrome/chrome.exe");
 const dataset = require("../../resources/data.json");
 const scrapeData = async () => {
-  const maxRetries = 3; // Número máximo de reintentos
+  const maxRetries = 5; // Número máximo de reintentos
   let sectionElements = null;
   let retries = 0;
   console.log(executablePath);

@@ -6,7 +6,6 @@ const executablePath = path.resolve("./chrome/chrome.exe");
 const datasets = require("@/resources/data.json");
 
 const scraperSeries = async (pageNumber) => {
-  
   const browser = await puppeteer.launch({
     executablePath,
     timeout: 60000,
@@ -40,8 +39,9 @@ const scraperSeries = async (pageNumber) => {
 
 const scraperLibrary = async (totalPages) => {
   const allItems = [];
-  const maxRetries = 3; // Número máximo de reintentos
+  const maxRetries = 5; // Número máximo de reintentos
 
+  //for (let pageNumber = totalPages; pageNumber >= 1; pageNumber--) {
   for (let pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
     console.log("pagina: " + pageNumber + "/" + totalPages);
 

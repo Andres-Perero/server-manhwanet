@@ -1,5 +1,5 @@
-import { scraperFilterStatusTagsPagination } from "@/components/scraperFilterStatusTagsPagination/scraperFilterStatusTagsPagination"; // Ajusta la ruta a tu scraper
-import { saveDataToFileGD } from "@/components/saveDataToFileGD/saveDataToFileGD";
+import { scraperFilterStatusTagsPagination } from "../../components/scraperFilterStatusTagsPagination/scraperFilterStatusTagsPagination"; // Ajusta la ruta a tu scraper
+import { saveDataToFileGD } from "../../components/saveDataToFileGD/saveDataToFileGD";
 import { downloadChromeExecutableIfNeeded } from "../../resources/getChrome";
 
 const fs = require("fs");
@@ -7,7 +7,7 @@ const folders = require("../../data-googleapis/route-rsc-files.json");
 const rsc_library = require("../../resources/library.json");
 
 export default async function handler(req, res) {
-  if (req.method !== "GET") {
+  if (req.method !== "POST") {
     return res.status(405).end(); // Método no permitido
   }
   try {

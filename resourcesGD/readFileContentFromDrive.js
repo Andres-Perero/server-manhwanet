@@ -19,12 +19,11 @@ async function findFileInFolder(folderId, filename) {
         pageToken: nextPageToken,
       });
 
-      const matchingFiles = response.data.files.filter(
+      const matchingFiles = await response.data.files.filter(
         (file) => file.name === filename
       );
-
-      if (matchingFiles.length > 0) {
-        return matchingFiles[0]; // Devuelve el primer archivo encontrado
+      if (response.data.files[0]) {
+        return response.data.files[0]; // Devuelve el primer archivo encontrado
       }
 
       nextPageToken = response.data.nextPageToken; // Obtiene el token para la siguiente página
@@ -107,7 +106,7 @@ async function downloadFilesFromDrive(folderId, parentPath = "") {
     // Directorio local donde guardar los archivos (en la carpeta "Chrome" de la raíz)
     const localDirectory = "./chrome/";
     //const localDirectory = "/var/task/chrome/";
-   
+
     // Itera sobre los elementos
     for (const item of items) {
       if (item.mimeType === "application/vnd.google-apps.folder") {
@@ -152,4 +151,5 @@ export {
   readFileContentFromDrive,
   getAllFilesInFolder,
   downloadFilesFromDrive,
+  findFileInFolder,
 };

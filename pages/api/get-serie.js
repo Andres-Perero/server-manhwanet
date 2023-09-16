@@ -1,4 +1,4 @@
-import { getDataGD } from "@/resourcesGD/readFileContentFromDrive";
+import { getDataGD } from "../../resourcesGD/readFileContentFromDrive";
 
 const folders = require("../../data-googleapis/route-rsc-files.json");
 const rsc_library = require("../../resources/library.json");

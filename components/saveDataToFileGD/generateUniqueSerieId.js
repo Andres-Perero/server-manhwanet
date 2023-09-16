@@ -1,5 +1,5 @@
-const { getDataGD } = require("@/resourcesGD/readFileContentFromDrive");
-import { saveDataToFileGD } from "@/components/saveDataToFileGD/saveDataToFileGD";
+const { getDataGD } = require("../../resourcesGD/readFileContentFromDrive");
+import { saveDataToFileGD } from "../../components/saveDataToFileGD/saveDataToFileGD";
 const folders = require("../../data-googleapis/route-rsc-files.json");
 const rsc_library = require("../../resources/library.json");
 
@@ -15,11 +15,13 @@ const generateNewIdSerie = async (idSeriesData) => {
   return newIdSerie; // Convert it to a string
 };
 const generateUniqueSerieId = async (urlSerie, title) => {
+  //traera el archivo donde esta  todos los id´s de las series
   const idSeriesData = await getDataGD(
     folders.dataIdSeries,
     rsc_library.idSerie
   ); // Load existing idSerie data
 
+//pregunto si existe la serie scrapeada mendiante su URL
   const existingSerie = idSeriesData.find(
     (entry) => entry.urlSerie === urlSerie
   );

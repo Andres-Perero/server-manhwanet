@@ -6,7 +6,7 @@ const executablePath = path.resolve( "./chrome/chrome.exe");
 const datasets = require("@/resources/data.json");
 
 const scraperFilterStatusTagsPagination = async () => {
-  const maxRetries = 3; // Número máximo de reintentos
+  const maxRetries = 5; // Número máximo de reintentos
   let data = null;
   let retries = 0;
 
@@ -67,7 +67,7 @@ const scraperFilterStatusTagsPagination = async () => {
         const pageValue = parseInt(text);
 
         if (!isNaN(pageValue) && pageValue > highestPageLink.value) {
-          highestPageLink = { href, value: pageValue };
+          highestPageLink = { href, value: pageValue, date: new Date() };
         }
       }
 

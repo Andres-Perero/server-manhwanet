@@ -1,9 +1,10 @@
 // getSeriesDetails.js
-import { scraperSerieDetails } from "@/components/scraperSerieDetails/scraperSerieDetails";
-import { saveDataToFileGD } from "@/components/saveDataToFileGD/saveDataToFileGD";
+import { scraperSerieDetails } from "../../components/scraperSerieDetails/scraperSerieDetails";
+import { saveDataToFileGD } from "../../components/saveDataToFileGD/saveDataToFileGD";
 
 import folders from "@/data-googleapis/route-rsc-files.json";
-import { generateUniqueSerieId } from "@/components/saveDataToFileGD/generateUniqueSerieId";
+import { generateUniqueSerieId } from "../../components/saveDataToFileGD/generateUniqueSerieId";
+import { getDataGD } from "../../resourcesGD/readFileContentFromDrive";
 
 function areObjectsEqual(obj1, obj2) {
   if (typeof obj1 !== "object" || typeof obj2 !== "object") {
@@ -29,7 +30,7 @@ function areObjectsEqual(obj1, obj2) {
 const getSeriesDetails = async (article) => {
   try {
     let previousSaveDetails = null;
-    console.log("Serie: " + article.title);
+
     const details = await scraperSerieDetails(article.urlSerie);
 
     if (details) {
@@ -43,7 +44,14 @@ const getSeriesDetails = async (article) => {
         newDetails.idSerie,
         newDetails
       );
-
+      const existDetailsChapters = await getDataGD(
+        folders.dataSeriesDetailsChapters,
+        newDetails.idSerie
+      );
+      if (fileFound && !existDetailsChapters) {
+        console.log("detailsChapters no existe pero su detailSerie si")
+        return { previousSaveDetails: newDetails, details: null };
+      }
       if (fileFound) {
         const isEqual = areObjectsEqual(data.chapters, newDetails.chapters);
         if (isEqual) {
@@ -54,6 +62,7 @@ const getSeriesDetails = async (article) => {
       } else {
         return { previousSaveDetails, details: newDetails };
       }
+      
     }
   } catch (error) {
     console.error("Error al obtener detalles de la serie:", error);

@@ -5,7 +5,7 @@ const executablePath = path.resolve("./chrome/chrome.exe");
 //const executablePath = path.resolve("/var/task/chrome/chrome.exe");
 
 const scraperSerieDetails = async (urlSerie) => {
-  const maxRetries = 3; // Número máximo de reintentos
+  const maxRetries = 5; // Número máximo de reintentos
   let seriesDetails;
   let retries = 0;
 

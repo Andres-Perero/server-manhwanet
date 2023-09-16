@@ -5,11 +5,17 @@ const serieDetailChapters = async (idSerie,title, urlSerie, chapters) => {
     const chapterDetailsList = []; // Aquí almacenaremos los detalles de los capítulos
     for (const chapter of chapters) {
       console.log("chapter: " + chapter.chapter);
-      const chapterDetails = await scraperSerieDetailChapter(
-        chapter.urlChapter
-      );
-      if (chapterDetails) {
-        chapterDetailsList.push(chapterDetails);
+      try {
+        const chapterDetails = await scraperSerieDetailChapter(
+          chapter.urlChapter
+        );
+        if (chapterDetails) {
+          chapterDetailsList.push(chapterDetails);
+        }
+      } catch (error) {
+        console.error("Error en el scraping del capítulo:", error);
+        // Puedes manejar el error de manera apropiada aquí si es necesario.
+        // Por ejemplo, puedes registrar el error y continuar con la siguiente iteración.
       }
     }
 
