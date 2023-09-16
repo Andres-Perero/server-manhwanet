@@ -7,6 +7,40 @@ import { downloadChromeExecutableIfNeeded } from "../../resources/getChrome";
 const folders = require("../../data-googleapis/route-rsc-files.json");
 const rsc_library = require("../../resources/library.json");
 
+async function updateSeriesDetails(serieDetails) {
+  try {
+    const { previousSaveDetails, details } = await getSeriesDetails(serieDetails);
+
+    if (details) {
+      let newChapters = [];
+      if (previousSaveDetails) {
+        newChapters = details.chapters.filter(
+          (newChapter) =>
+            !previousSaveDetails.chapters?.some(
+              (prevChapter) => prevChapter.chapter === newChapter.chapter
+            )
+        );
+        const newDetails = {
+          ...details,
+          chapters: newChapters,
+        };
+        await getSeriesChaptersDetails(newDetails);
+      } else {
+        await getSeriesChaptersDetails(details);
+      }
+    } else {
+      if (previousSaveDetails) {
+        await getSeriesChaptersDetails(previousSaveDetails);
+      } else {
+        console.log("detailsSerie se mantiene actualizado");
+      }
+    }
+  } catch (error) {
+    console.error("Error al actualizar los detalles de la serie:", error);
+  }
+}
+
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).end(); // Método no permitido
@@ -23,35 +57,11 @@ export default async function handler(req, res) {
         sectionElements
       );
       for (const section of sectionElements) {
-        for (const article of section.articles) {
-          const { previousSaveDetails, details } = await getSeriesDetails(
-            article
-          );
-
-          if (details) {
-            let newChapters = [];
-            if (previousSaveDetails) {
-              // Filtrar los nuevos capítulos que no estaban en previousSaveDetails
-              newChapters = details.chapters.filter(
-                (newChapter) =>
-                  !previousSaveDetails.chapters?.some(
-                    (prevChapter) => prevChapter.chapter === newChapter.chapter
-                  )
-              );
-
-              // Crear un nuevo objeto con los nuevos capítulos
-              const newDetails = {
-                ...details,
-                chapters: newChapters,
-              };
-              await getSeriesChaptersDetails(newDetails);
-            } else {
-              await getSeriesChaptersDetails(details);
-            }
-          } else {
-            console.log("detailsSerie se mantiene actualizado");
-          }
+        for (const serie of section) {
+          console.log(serie.title);
+          await updateSeriesDetails(serie);
         }
+    
       }
     }
 

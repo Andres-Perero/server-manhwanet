@@ -11,33 +11,38 @@ const folders = require("../../data-googleapis/route-rsc-files.json");
 const rsc_library = require("../../resources/library.json");
 
 async function updateSeriesDetails(serieDetails) {
-  const { previousSaveDetails, details } = await getSeriesDetails(serieDetails);
+  try {
+    const { previousSaveDetails, details } = await getSeriesDetails(serieDetails);
 
-  if (details) {
-    let newChapters = [];
-    if (previousSaveDetails) {
-      newChapters = details.chapters.filter(
-        (newChapter) =>
-          !previousSaveDetails.chapters?.some(
-            (prevChapter) => prevChapter.chapter === newChapter.chapter
-          )
-      );
-      const newDetails = {
-        ...details,
-        chapters: newChapters,
-      };
-      await getSeriesChaptersDetails(newDetails);
+    if (details) {
+      let newChapters = [];
+      if (previousSaveDetails) {
+        newChapters = details.chapters.filter(
+          (newChapter) =>
+            !previousSaveDetails.chapters?.some(
+              (prevChapter) => prevChapter.chapter === newChapter.chapter
+            )
+        );
+        const newDetails = {
+          ...details,
+          chapters: newChapters,
+        };
+        await getSeriesChaptersDetails(newDetails);
+      } else {
+        await getSeriesChaptersDetails(details);
+      }
     } else {
-      await getSeriesChaptersDetails(details);
+      if (previousSaveDetails) {
+        await getSeriesChaptersDetails(previousSaveDetails);
+      } else {
+        console.log("detailsSerie se mantiene actualizado");
+      }
     }
-  } else {
-    if (previousSaveDetails) {
-      await getSeriesChaptersDetails(previousSaveDetails);
-    } else {
-      console.log("detailsSerie se mantiene actualizado");
-    }
+  } catch (error) {
+    console.error("Error al actualizar los detalles de la serie:", error);
   }
 }
+
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
