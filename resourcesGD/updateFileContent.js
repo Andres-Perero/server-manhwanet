@@ -1,8 +1,8 @@
 // Importar las bibliotecas necesarias
 const { google } = require("googleapis");
 const data_key = require("../data-googleapis/storage-web-scraping-396800-96043ff114f4.json");
-import { readFileContentFromDrive,  } from "@/resourcesGD/readFileContentFromDrive";
-import { uploadFileToDrive } from "@/resourcesGD/uploadFileToDrive";
+import { readFileContentFromDrive,  } from "./readFileContentFromDrive";
+import { uploadFileToDrive } from "./uploadFileToDrive";
 import { findFileInFolder } from "./readFileContentFromDrive";
 
 // Configurar la autenticación para la cuenta de servicio
@@ -10,8 +10,6 @@ const auth = new google.auth.GoogleAuth({
   credentials: data_key,
   scopes: ["https://www.googleapis.com/auth/drive"],
 });
-
-
 
 // Modificar el contenido de un archivo en Google Drive por su ID
 async function updateFileContent(fileId, newContent) {
@@ -25,7 +23,7 @@ async function updateFileContent(fileId, newContent) {
       fileId,
       media: media,
     });
-    console.log("Archivo actualizado en Google Drive: ", response.data.name);
+    //console.log("Archivo actualizado en Google Drive: ", response.data.name);
   } catch (error) {
     console.error(
       "Error al actualizar el archivo en Google Drive:",
@@ -41,7 +39,7 @@ async function updateDataGD(folderId, filename, newContent) {
     let fileFound = false;
 
     if (file) {
-      console.log("Archivo encontrado: ", file.name);
+      //console.log("Archivo encontrado: ", file.name);
       const readfile = await readFileContentFromDrive(file.id);
 
       if (readfile) {
@@ -50,7 +48,7 @@ async function updateDataGD(folderId, filename, newContent) {
       fileFound = true;
       return { fileFound, data: readfile };
     } else {
-      console.log("Creando archivo: ", filename);
+      //console.log("Creando archivo: ", filename);
       await uploadFileToDrive(folderId, filename, newContent);
       return { fileFound, data: JSON.parse(newContent) };
     }

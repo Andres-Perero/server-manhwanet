@@ -1,11 +1,10 @@
-
 const puppeteer = require("puppeteer-core");
 const path = require("path");
 const executablePath = path.resolve("./chrome/chrome.exe");
 //const executablePath = path.resolve("/var/task/chrome/chrome.exe");
 const maxRetries = 5; // Número máximo de reintentos
 
-const scraperSerieDetailChapter = async (urlChapter) => {
+const scraperSerieDetailChapter = async (urlChapter, numChapter) => {
   let retries = 0;
 
   while (retries < maxRetries) {
@@ -21,7 +20,7 @@ const scraperSerieDetailChapter = async (urlChapter) => {
         timeout: 60000,
       });
 
-      const scrapedData = await page.evaluate((urlChapter) => {
+      const scrapedData = await page.evaluate((urlChapter, numChapter) => {
         const titleElement = document.querySelector(".anime-title.text-center");
         const title = titleElement.textContent.trim();
 
@@ -53,13 +52,14 @@ const scraperSerieDetailChapter = async (urlChapter) => {
 
         return {
           title: title,
+          numChapter: numChapter, // Incluimos numChapter en el objeto de retorno
           urlSerie: urlSerie,
           urlChapter: urlChapter,
           previousEpisodeLink: previousEpisodeLink,
           nextEpisodeLink: nextEpisodeLink,
           imageUrls: imageUrls,
         };
-      }, urlChapter);
+      }, urlChapter, numChapter);
 
       await browser.close();
       return scrapedData;

@@ -8,7 +8,6 @@ const scrapeData = async () => {
   const maxRetries = 5; // Número máximo de reintentos
   let sectionElements = null;
   let retries = 0;
-  console.log(executablePath);
   while (!sectionElements && retries < maxRetries) {
     try {
       const browser = await puppeteer.launch({
@@ -51,7 +50,7 @@ const scrapeData = async () => {
             return {
               urlChapter: urlChapter ? urlChapter.href : "",
               urlSerie: urlSerie ? urlSerie.href : "",
-              img: img ? img.src : "",
+              image: img ? img.src : "",
               title: title ? title.textContent.trim() : "",
               timestamp: timestamp ? timestamp.textContent.trim() : "",
               chapterNumber: chapterNumberElement

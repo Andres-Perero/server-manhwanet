@@ -51,10 +51,12 @@ const scraperSerieDetails = async (urlSerie) => {
         });
         const numChapters = chapters.length; // Agregar la cantidad de capítulos
         //generate idSerie
+        const image = document.querySelector('.thumb figure img').src;
 
         return {
           title,
           urlSerie,
+          image,
           type,
           status,
           genres,

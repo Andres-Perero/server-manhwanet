@@ -35,8 +35,7 @@ const getSeriesDetails = async (article) => {
 
     if (details) {
       const idSerie = await generateUniqueSerieId(
-        details.urlSerie,
-        details.title
+        details
       );
       const newDetails = { idSerie, ...details };
       const { fileFound, data } = await saveDataToFileGD(

@@ -27,8 +27,6 @@ async function uploadFileToDrive(folder, filename, fileContent) {
       media: media,
       fields: "id",
     });
-
-    console.log("Archivo subido a Google Drive");
   } catch (error) {
     console.error("Error al subir el archivo a Google Drive:", error.message);
   }

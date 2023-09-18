@@ -9,10 +9,10 @@ export default async function handler(req, res) {
   }
 
   try {
-    console.log(req.query.idSerie)
-    const idSerie = req.query.idSerie;
+    console.log(req.query.idseriechapters)
+    const idSerie = req.query.idseriechapters;
     console.log("Lista de las series alojadas en la web");
-    const element = await getDataGD(folders.dataSeriesDetails, idSerie);
+    const element = await getDataGD(folders.dataSeriesDetailsChapters, idSerie);
 
     res.status(200).json({
       element,

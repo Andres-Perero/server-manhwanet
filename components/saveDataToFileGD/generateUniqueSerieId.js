@@ -14,17 +14,15 @@ const generateNewIdSerie = async (idSeriesData) => {
   const newIdSerie = highestIdSerie + 1;
   return newIdSerie; // Convert it to a string
 };
-const generateUniqueSerieId = async (urlSerie, title) => {
+const generateUniqueSerieId = async (serie) => {
   //traera el archivo donde esta  todos los id´s de las series
-  const idSeriesData = await getDataGD(
-    folders.dataIdSeries,
-    rsc_library.idSerie
-  ); // Load existing idSerie data
+  const idSeriesData = await getDataGD(folders.dataSeries, rsc_library.series); // Load existing idSerie data
 
-//pregunto si existe la serie scrapeada mendiante su URL
-  const existingSerie = idSeriesData.find(
-    (entry) => entry.urlSerie === urlSerie
+  //pregunto si existe la serie scrapeada mendiante su URL
+  const existingSerie = await idSeriesData.find(
+    (entry) => entry.urlSerie === serie.urlSerie
   );
+
   if (existingSerie) {
     return existingSerie.idSerie; // If the serie already exists, return its idSerie
   }
@@ -32,14 +30,25 @@ const generateUniqueSerieId = async (urlSerie, title) => {
   // If the serie doesn't exist, generate a new unique idSerie
   const newIdSerie = await generateNewIdSerie(idSeriesData);
   if (newIdSerie) {
-    const newIdSerieEntry = { idSerie: newIdSerie, title, urlSerie };
+    let title = serie.title;
+    let urlSerie = serie.urlSerie;
+    let image = serie.image;
+    let type = serie.type;
+
+    const newIdSerieEntry = {
+      idSerie: newIdSerie,
+      title,
+      type,
+      urlSerie,
+      image,
+    };
 
     idSeriesData.push(newIdSerieEntry); // Add the new entry to the data
 
     // Save the updated idSeriesData back to the IdSeries.json file
     await saveDataToFileGD(
-      folders.dataIdSeries,
-      rsc_library.idSerie,
+      folders.dataSeries,
+      rsc_library.series,
       idSeriesData
     );
   }

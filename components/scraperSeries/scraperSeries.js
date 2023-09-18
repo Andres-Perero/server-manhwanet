@@ -1,3 +1,5 @@
+import { generateUniqueSerieId } from "../../components/saveDataToFileGD/generateUniqueSerieId";
+
 const puppeteer = require("puppeteer-core");
 const path = require("path");
 const executablePath = path.resolve("./chrome/chrome.exe");
@@ -20,20 +22,24 @@ const scraperSeries = async (pageNumber) => {
   //await page.goto(url);
   await page.waitForSelector(".anime"); // Esperar a que los elementos estén disponibles
 
-  const items = await page.evaluate(() => {
+  const items = await page.evaluate(async () => {
     const itemElements = Array.from(document.querySelectorAll(".anime"));
-    return itemElements.map((itemElement) => {
-      // Extraer la información relevante del elemento
+    const result = [];
+
+    for (const itemElement of itemElements) {
       const title = itemElement.querySelector(".title").textContent.trim();
       const type = itemElement.querySelector(".anime-badge").textContent.trim();
       const urlSerie = itemElement.querySelector("a").getAttribute("href");
       const image = itemElement.querySelector("img").getAttribute("src");
 
-      return { title, type, urlSerie, image };
-    });
+      result.push({ title, type, urlSerie, image });
+    }
+
+    return result;
   });
 
   await browser.close();
+
   return items;
 };
 

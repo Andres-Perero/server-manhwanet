@@ -1,45 +1,10 @@
 import { saveDataToFileGD } from "../../components/saveDataToFileGD/saveDataToFileGD";
 import { scrapeData } from "../../components/scraperDataInit/scraperDataInit";
-import { getSeriesDetails } from "../../components/getDataSeries/getSeriesDetails";
-import { getSeriesChaptersDetails } from "../../components/getDataSeries/getSeriesChaptersDetails";
 import { downloadChromeExecutableIfNeeded } from "../../resources/getChrome";
+import { updateSeriesDetails } from "../../components/saveDataToFileGD/updateSeriesDetails";
 
 const folders = require("../../data-googleapis/route-rsc-files.json");
 const rsc_library = require("../../resources/library.json");
-
-async function updateSeriesDetails(serieDetails) {
-  try {
-    const { previousSaveDetails, details } = await getSeriesDetails(serieDetails);
-
-    if (details) {
-      let newChapters = [];
-      if (previousSaveDetails) {
-        newChapters = details.chapters.filter(
-          (newChapter) =>
-            !previousSaveDetails.chapters?.some(
-              (prevChapter) => prevChapter.chapter === newChapter.chapter
-            )
-        );
-        const newDetails = {
-          ...details,
-          chapters: newChapters,
-        };
-        await getSeriesChaptersDetails(newDetails);
-      } else {
-        await getSeriesChaptersDetails(details);
-      }
-    } else {
-      if (previousSaveDetails) {
-        await getSeriesChaptersDetails(previousSaveDetails);
-      } else {
-        console.log("detailsSerie se mantiene actualizado");
-      }
-    }
-  } catch (error) {
-    console.error("Error al actualizar los detalles de la serie:", error);
-  }
-}
-
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -57,11 +22,10 @@ export default async function handler(req, res) {
         sectionElements
       );
       for (const section of sectionElements) {
-        for (const serie of section) {
+        for (const serie of section.articles) {
           console.log(serie.title);
           await updateSeriesDetails(serie);
         }
-    
       }
     }
 
