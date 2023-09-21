@@ -20,46 +20,23 @@ const scraperSerieDetailChapter = async (urlChapter, numChapter) => {
         timeout: 60000,
       });
 
-      const scrapedData = await page.evaluate((urlChapter, numChapter) => {
-        const titleElement = document.querySelector(".anime-title.text-center");
-        const title = titleElement.textContent.trim();
+      const scrapedData = await page.evaluate(
+        (urlChapter, numChapter) => {
+          const chapterImageElements =
+            document.querySelectorAll("#chapter_imgs img");
+          const imageUrls = Array.from(chapterImageElements)
+            .map((img) => img.src)
+            .filter((src) => src !== urlChapter); // Filtrar el enlace no deseado
 
-        const episodeNavLinks = document.querySelectorAll(".episodes-nav a");
-        const previousEpisodeLink =
-          Array.from(episodeNavLinks)
-            .find((link) =>
-              link.innerHTML.includes('<i class="fa-arrow-left"></i>')
-            )
-            ?.getAttribute("href") || "";
-        const urlSerie =
-          Array.from(episodeNavLinks)
-            .find((link) =>
-              link.innerHTML.includes('<i class="fa-list-ul"></i>')
-            )
-            ?.getAttribute("href") || "";
-        const nextEpisodeLink =
-          Array.from(episodeNavLinks)
-            .find((link) =>
-              link.innerHTML.includes('<i class="fa-arrow-right"></i>')
-            )
-            ?.getAttribute("href") || "";
-
-        const chapterImageElements =
-          document.querySelectorAll("#chapter_imgs img");
-        const imageUrls = Array.from(chapterImageElements)
-          .map((img) => img.src)
-          .filter((src) => src);
-
-        return {
-          title: title,
-          numChapter: numChapter, // Incluimos numChapter en el objeto de retorno
-          urlSerie: urlSerie,
-          urlChapter: urlChapter,
-          previousEpisodeLink: previousEpisodeLink,
-          nextEpisodeLink: nextEpisodeLink,
-          imageUrls: imageUrls,
-        };
-      }, urlChapter, numChapter);
+          return {
+            numChapter: numChapter, // Incluimos numChapter en el objeto de retorno
+            urlChapter: urlChapter,
+            imageUrls: imageUrls,
+          };
+        },
+        urlChapter,
+        numChapter
+      );
 
       await browser.close();
       return scrapedData;

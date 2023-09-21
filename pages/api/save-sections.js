@@ -1,3 +1,4 @@
+//save-sections
 import { saveDataToFileGD } from "../../components/saveDataToFileGD/saveDataToFileGD";
 import { scrapeData } from "../../components/scraperDataInit/scraperDataInit";
 import { downloadChromeExecutableIfNeeded } from "../../resources/getChrome";
@@ -15,6 +16,7 @@ export default async function handler(req, res) {
     console.log("Actualizando datos de seccion agregados recientes");
     await downloadChromeExecutableIfNeeded();
     const sectionElements = await scrapeData();
+
     if (sectionElements) {
       await saveDataToFileGD(
         folders.sections,
@@ -27,6 +29,7 @@ export default async function handler(req, res) {
           await updateSeriesDetails(serie);
         }
       }
+      console.log("se completo el scraper de la seccion de recien agregados");
     }
 
     // Envía los datos como respuesta en formato JSON

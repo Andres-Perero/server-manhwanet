@@ -39,7 +39,13 @@ const scrapeData = async () => {
           const articlesData = articles.map((article) => {
             // Extraer los datos de cada artículo individual
             const urlChapter = article.querySelector("a:nth-child(1)");
-            const urlSerie = article.querySelector("a:nth-child(2)");
+            const urlSerie =
+              "https://www." +
+              article
+                .querySelector("a:nth-child(2)")
+                .getAttribute("href")
+                .slice(8);
+
             const img = article.querySelector("img[src]");
             const title = article.querySelector(".title");
             const timestamp = article.querySelector(".text-secondary");
@@ -49,7 +55,7 @@ const scrapeData = async () => {
 
             return {
               urlChapter: urlChapter ? urlChapter.href : "",
-              urlSerie: urlSerie ? urlSerie.href : "",
+              urlSerie: urlSerie ? urlSerie : "",
               image: img ? img.src : "",
               title: title ? title.textContent.trim() : "",
               timestamp: timestamp ? timestamp.textContent.trim() : "",

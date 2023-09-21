@@ -1,17 +1,27 @@
+//save-series
 import { scraperLibrary } from "../../components/scraperSeries/scraperSeries";
 import { getDataGD } from "../../resourcesGD/readFileContentFromDrive";
-import { saveDataToFileGD } from "../../components/saveDataToFileGD/saveDataToFileGD";
 import { downloadChromeExecutableIfNeeded } from "../../resources/getChrome";
 import { generateUniqueSerieId } from "../../components/saveDataToFileGD/generateUniqueSerieId";
+import { saveDataToFileGD } from "../../components/saveDataToFileGD/saveDataToFileGD";
 
 const folders = require("../../data-googleapis/route-rsc-files.json");
 const rsc_library = require("../../resources/library.json");
 
-const generateIDSeriesSaveGD = async (dataSeries) => {
+const generateIDSeriesSaveGD = async (dataSeries, SeriesPagesGD) => {
   try {
+    let idSeriesData = [];
     for (let serie of dataSeries) {
       console.log("serie: " + serie.title);
-      await generateUniqueSerieId(serie);
+      idSeriesData = await generateUniqueSerieId(serie, SeriesPagesGD);
+    }
+    if (idSeriesData) {
+      // Save the updated idSeriesData back to the IdSeries.json file
+      await saveDataToFileGD(
+        folders.dataSeries,
+        rsc_library.series,
+        idSeriesData
+      );
     }
   } catch (error) {
     console.error("Error en generateIDSeriesSaveGD:", error);
@@ -30,7 +40,7 @@ export default async function handler(req, res) {
       folders.resourcesWebScraping,
       rsc_library.pagination
     );
-    const totalPages = 1; //paginationSeries.value;
+    const totalPages = paginationSeries.value;
     const SeriesPagesScraper = await scraperLibrary(totalPages);
 
     let newSeries = [];
@@ -49,8 +59,10 @@ export default async function handler(req, res) {
         );
         if (newSeries) {
           console.log(newSeries.length);
-          await generateIDSeriesSaveGD(newSeries);
-          console.log("mapeo de las series regien agregadas: " + newSeries.length);
+          await generateIDSeriesSaveGD(newSeries, SeriesPagesGD);
+          console.log(
+            "mapeo de las series regien agregadas: " + newSeries.length
+          );
         }
       }
     }

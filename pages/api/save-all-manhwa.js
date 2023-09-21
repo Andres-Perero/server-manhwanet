@@ -1,4 +1,4 @@
-//save-all-library
+//save-all-manhwa
 
 import { getDataGD } from "../../resourcesGD/readFileContentFromDrive";
 import { downloadChromeExecutableIfNeeded } from "../../resources/getChrome";
@@ -18,8 +18,10 @@ export default async function handler(req, res) {
     const SeriesPages = await getDataGD(folders.dataSeries, rsc_library.series);
 
     for (const serie of SeriesPages) {
-      console.log(serie.title);
-      await updateSeriesDetails(serie);
+      if (serie.type === "Manhwa") {
+        console.log(serie.title);
+        await updateSeriesDetails(serie);
+      }
     }
     console.log("================================");
     console.log("Series guardadas.");

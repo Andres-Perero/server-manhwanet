@@ -14,9 +14,9 @@ const generateNewIdSerie = async (idSeriesData) => {
   const newIdSerie = highestIdSerie + 1;
   return newIdSerie; // Convert it to a string
 };
-const generateUniqueSerieId = async (serie) => {
+const generateUniqueSerieId = async (serie, SeriesPagesGD = null) => {
   //traera el archivo donde esta  todos los id´s de las series
-  const idSeriesData = await getDataGD(folders.dataSeries, rsc_library.series); // Load existing idSerie data
+  const idSeriesData = SeriesPagesGD//await getDataGD(folders.dataSeries, rsc_library.series); // Load existing idSerie data
 
   //pregunto si existe la serie scrapeada mendiante su URL
   const existingSerie = await idSeriesData.find(
@@ -45,15 +45,10 @@ const generateUniqueSerieId = async (serie) => {
 
     idSeriesData.push(newIdSerieEntry); // Add the new entry to the data
 
-    // Save the updated idSeriesData back to the IdSeries.json file
-    await saveDataToFileGD(
-      folders.dataSeries,
-      rsc_library.series,
-      idSeriesData
-    );
+    
   }
 
-  return newIdSerie;
+  return idSeriesData;
 };
 
 export { generateUniqueSerieId };

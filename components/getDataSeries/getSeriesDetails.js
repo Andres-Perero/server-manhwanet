@@ -2,9 +2,12 @@
 import { scraperSerieDetails } from "../../components/scraperSerieDetails/scraperSerieDetails";
 import { saveDataToFileGD } from "../../components/saveDataToFileGD/saveDataToFileGD";
 
-import folders from "@/data-googleapis/route-rsc-files.json";
+
 import { generateUniqueSerieId } from "../../components/saveDataToFileGD/generateUniqueSerieId";
 import { getDataGD } from "../../resourcesGD/readFileContentFromDrive";
+
+const folders = require("../../data-googleapis/route-rsc-files.json");
+const rsc_library = require("../../resources/library.json");
 
 function areObjectsEqual(obj1, obj2) {
   if (typeof obj1 !== "object" || typeof obj2 !== "object") {
@@ -34,9 +37,12 @@ const getSeriesDetails = async (article) => {
     const details = await scraperSerieDetails(article.urlSerie);
 
     if (details) {
-      const idSerie = await generateUniqueSerieId(
-        details
-      );
+      const idSeriesData = await getDataGD(
+        folders.dataSeries,
+        rsc_library.series
+      ); // Load existing idSerie data
+
+      const idSerie = await generateUniqueSerieId(details, idSeriesData);
       const newDetails = { idSerie, ...details };
       const { fileFound, data } = await saveDataToFileGD(
         folders.dataSeriesDetails,
@@ -48,7 +54,7 @@ const getSeriesDetails = async (article) => {
         newDetails.idSerie
       );
       if (fileFound && !existDetailsChapters) {
-        console.log("detailsChapters no existe pero su detailSerie si")
+        console.log("detailsChapters no existe pero su detailSerie si");
         return { previousSaveDetails: newDetails, details: null };
       }
       if (fileFound) {
@@ -61,7 +67,6 @@ const getSeriesDetails = async (article) => {
       } else {
         return { previousSaveDetails, details: newDetails };
       }
-      
     }
   } catch (error) {
     console.error("Error al obtener detalles de la serie:", error);
