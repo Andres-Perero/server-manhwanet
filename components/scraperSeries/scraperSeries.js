@@ -1,5 +1,3 @@
-import { generateUniqueSerieId } from "../../components/saveDataToFileGD/generateUniqueSerieId";
-
 const puppeteer = require("puppeteer-core");
 const path = require("path");
 const executablePath = path.resolve("./chrome/chrome.exe");
@@ -48,7 +46,7 @@ const scraperLibrary = async (totalPages) => {
   const maxRetries = 5; // Número máximo de reintentos
 
   for (let pageNumber = totalPages; pageNumber >= 1; pageNumber--) {
-  //for (let pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
+    //for (let pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
     console.log("pagina: " + pageNumber + "/" + totalPages);
 
     let itemsOnPage;

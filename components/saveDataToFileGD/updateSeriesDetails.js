@@ -43,8 +43,10 @@ async function refreshSerieDetails(serieDetail) {
         dataSerieGD.title
       );
     }
+
     //guardo ahora los caps de la serie
     await getSerieChaptersDetail(prevDataSerieGD, dataSerieGD);
+    return dataSerieGD.idSerie;
   } catch (error) {
     console.error("Error al actualizar los detalles de la serie:", error);
   }

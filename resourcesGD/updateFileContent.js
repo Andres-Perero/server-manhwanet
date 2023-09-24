@@ -58,4 +58,4 @@ async function updateDataGD(folderId, filename, newContent) {
   }
 }
 
-export { updateDataGD };
+export { updateDataGD, updateFileContent };

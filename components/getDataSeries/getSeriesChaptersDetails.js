@@ -1,6 +1,6 @@
 import { getSerieDetailChapters } from "../../components/scraperSerieDetailChapters/serieDetailChapters";
 import { saveDataToFileGD } from "../../components/saveDataToFileGD/saveDataToFileGD"; // Asegúrate de tener una función para leer el archivo existente
-import folders from "@/data-googleapis/route-rsc-files.json";
+import folders from "../../data-googleapis/route-rsc-files.json";
 import { getDataGD } from "../../resourcesGD/readFileContentFromDrive";
 
 const getSerieChaptersDetail = async (prevDataSerieGD, dataSerieGD) => {

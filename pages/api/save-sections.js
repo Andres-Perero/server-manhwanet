@@ -13,54 +13,37 @@ export default async function handler(req, res) {
   }
 
   try {
-    console.log("Actualizando datos de seccion agregados recientes");
+    console.log("Actualizando datos de seccion agregados");
     await downloadChromeExecutableIfNeeded();
     const sectionElements = await scrapeData();
-
+    await saveDataToFileGD(
+      folders.sections,
+      rsc_library.sections,
+      sectionElements
+    );
+    let seriesUpdate = [];
+    let sectionUpdate = [];
     if (sectionElements) {
       for (const section of sectionElements) {
         for (const serie of section.articles) {
+          console.log("================================================");
           console.log(serie.title);
-          await refreshSerieDetails(serie);
+          const idSerie = await refreshSerieDetails(serie);
+          seriesUpdate.push({ idSerie, ...serie });
           console.log("================================================");
         }
-
-        console.log("se completo el scraper de la seccion de recien agregados");
-      }
-      const dataSeries = await getDataGD(
-        folders.dataSeries,
-        rsc_library.series
-      );
-      let newSections = [];
-
-      for (const section of sectionElements) {
-        let updatedArticles = [];
-
-        for (const article of section.articles) {
-          const matchingDataSerie = dataSeries.find(
-            (dataSerie) => dataSerie.urlSerie === article.urlSerie
-          );
-
-          if (matchingDataSerie) {
-            updatedArticles.push({
-              ...article,
-              idSerie: matchingDataSerie.idSerie,
-            });
-          }
-        }
-
         const updatedSection = {
           ...section,
-          articles: updatedArticles,
+          articles: seriesUpdate,
         };
-
-        newSections.push(updatedSection);
+        sectionUpdate.push(updatedSection);
       }
       await saveDataToFileGD(
         folders.sections,
         rsc_library.sections,
-        newSections
+        sectionUpdate
       );
+      console.log("se completo el scraper de la seccion de recien agregados");
     }
     // Envía los datos como respuesta en formato JSON
     res
