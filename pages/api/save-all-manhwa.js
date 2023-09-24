@@ -2,7 +2,7 @@
 
 import { getDataGD } from "../../resourcesGD/readFileContentFromDrive";
 import { downloadChromeExecutableIfNeeded } from "../../resources/getChrome";
-import { updateSeriesDetails } from "../../components/saveDataToFileGD/updateSeriesDetails";
+import { refreshSerieDetails } from "../../components/saveDataToFileGD/updateSeriesDetails";
 
 const folders = require("../../data-googleapis/route-rsc-files.json");
 const rsc_library = require("../../resources/library.json");
@@ -15,12 +15,12 @@ export default async function handler(req, res) {
   try {
     await downloadChromeExecutableIfNeeded();
 
-    const SeriesPages = await getDataGD(folders.dataSeries, rsc_library.series);
+    const seriesPages = await getDataGD(folders.dataSeries, rsc_library.series);
 
-    for (const serie of SeriesPages) {
+    for (const serie of seriesPages) {
       if (serie.type === "Manhwa") {
         console.log(serie.title);
-        await updateSeriesDetails(serie);
+        await refreshSerieDetails(serie);
       }
     }
     console.log("================================");

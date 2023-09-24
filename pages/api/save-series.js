@@ -10,17 +10,21 @@ const rsc_library = require("../../resources/library.json");
 
 const generateIDSeriesSaveGD = async (dataSeries, SeriesPagesGD) => {
   try {
-    let idSeriesData = [];
+    let idSeriesDataSave = [];
     for (let serie of dataSeries) {
       console.log("serie: " + serie.title);
-      idSeriesData = await generateUniqueSerieId(serie, SeriesPagesGD);
+      const { newIdSerie, idSeriesData } = await generateUniqueSerieId(
+        serie,
+        SeriesPagesGD
+      );
+      idSeriesDataSave = idSeriesData;
     }
-    if (idSeriesData) {
+    if (idSeriesDataSave) {
       // Save the updated idSeriesData back to the IdSeries.json file
       await saveDataToFileGD(
         folders.dataSeries,
         rsc_library.series,
-        idSeriesData
+        idSeriesDataSave
       );
     }
   } catch (error) {

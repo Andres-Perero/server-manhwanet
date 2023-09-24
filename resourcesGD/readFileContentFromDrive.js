@@ -29,7 +29,7 @@ async function findFileInFolder(folderId, filename) {
       nextPageToken = response.data.nextPageToken; // Obtiene el token para la siguiente página
     } while (nextPageToken); // Repite el proceso si hay más páginas
 
-    console.log("Archivo no encontrado en la carpeta: " , filename);
+    console.log("Archivo no encontrado: " , filename);
     return null;
   } catch (error) {
     console.error("Error al buscar el archivo:", error.message);
@@ -63,7 +63,10 @@ async function getDataGD(folderId, filename) {
     console.error("Error:", error);
     return null;
   }
+
+  return null; // Si no se encontró el archivo, se retorna null
 }
+
 
 // Obtener todos los elementos (archivos) de una carpeta específica en Google Drive
 async function getAllFilesInFolder(folderId) {

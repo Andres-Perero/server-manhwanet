@@ -1,72 +1,48 @@
 // getSeriesDetails.js
 import { scraperSerieDetails } from "../../components/scraperSerieDetails/scraperSerieDetails";
 import { saveDataToFileGD } from "../../components/saveDataToFileGD/saveDataToFileGD";
-
-
 import { generateUniqueSerieId } from "../../components/saveDataToFileGD/generateUniqueSerieId";
 import { getDataGD } from "../../resourcesGD/readFileContentFromDrive";
 
 const folders = require("../../data-googleapis/route-rsc-files.json");
 const rsc_library = require("../../resources/library.json");
 
-function areObjectsEqual(obj1, obj2) {
-  if (typeof obj1 !== "object" || typeof obj2 !== "object") {
-    return obj1 === obj2;
-  }
-
-  const keys1 = Object.keys(obj1);
-  const keys2 = Object.keys(obj2);
-
-  if (keys1.length !== keys2.length) {
-    return false;
-  }
-
-  for (const key of keys1) {
-    if (!areObjectsEqual(obj1[key], obj2[key])) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-const getSeriesDetails = async (article) => {
+const scrapeAndSaveSerieDetails = async (article) => {
   try {
-    let previousSaveDetails = null;
-
-    const details = await scraperSerieDetails(article.urlSerie);
-
-    if (details) {
-      const idSeriesData = await getDataGD(
+    //scraping de los detalles de la serie segun su url
+    const serieDetail = await scraperSerieDetails(article.urlSerie);
+    if (serieDetail) {
+      //abro la base de datos de la series
+      const seriesDataGD = await getDataGD(
         folders.dataSeries,
         rsc_library.series
-      ); // Load existing idSerie data
+      );
 
-      const idSerie = await generateUniqueSerieId(details, idSeriesData);
-      const newDetails = { idSerie, ...details };
+      const { idSerie, datasetSeries } = await generateUniqueSerieId(
+        serieDetail,
+        seriesDataGD
+      );
+
+      if (datasetSeries) {
+        // Save seriesID
+        await saveDataToFileGD(
+          folders.dataSeries,
+          rsc_library.series,
+          datasetSeries
+        );
+      }
+      const newDetails = { idSerie, ...serieDetail };
+      //Save SerieDetail
       const { fileFound, data } = await saveDataToFileGD(
         folders.dataSeriesDetails,
         newDetails.idSerie,
         newDetails
       );
-      const existDetailsChapters = await getDataGD(
-        folders.dataSeriesDetailsChapters,
-        newDetails.idSerie
-      );
-      if (fileFound && !existDetailsChapters) {
-        console.log("detailsChapters no existe pero su detailSerie si");
-        return { previousSaveDetails: newDetails, details: null };
-      }
       if (fileFound) {
-        const isEqual = areObjectsEqual(data.chapters, newDetails.chapters);
-        if (isEqual) {
-          return { previousSaveDetails, details: null };
-        } else {
-          return { previousSaveDetails: data, details: newDetails };
-        }
-      } else {
-        return { previousSaveDetails, details: newDetails };
+        return { prevDataSerieGD: data, dataSerieGD: newDetails };
       }
+      //aqui le digo que genere el serieDetailChapters
+      return { prevDataSerieGD: [], dataSerieGD: newDetails };
     }
   } catch (error) {
     console.error("Error al obtener detalles de la serie:", error);
@@ -74,4 +50,4 @@ const getSeriesDetails = async (article) => {
   }
 };
 
-export { getSeriesDetails };
+export { scrapeAndSaveSerieDetails };

@@ -10,11 +10,12 @@ export default async function handler(req, res) {
 
   try {
     console.log("Datos de seccion agregados recientemente");
-    const sectionElements = await getDataGD(
+    let sectionElements = await getDataGD(
       folders.sections,
       rsc_library.sections
     );
-
+   
+    
     res.status(200).json({
       sectionElements,
     });

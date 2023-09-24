@@ -1,6 +1,6 @@
 const { scraperSerieDetailChapter } = require("./scraperSerieDetailChapter");
 
-const serieDetailChapters = async (idSerie, title, urlSerie, chapters) => {
+const getSerieDetailChapters = async (idSerie, title, urlSerie, chapters) => {
   try {
     const chapterDetailsList = []; // Aquí almacenaremos los detalles de los capítulos
     for (const chapter of chapters) {
@@ -32,4 +32,4 @@ const serieDetailChapters = async (idSerie, title, urlSerie, chapters) => {
   }
 };
 
-export { serieDetailChapters };
+export { getSerieDetailChapters };
