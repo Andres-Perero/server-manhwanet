@@ -38,9 +38,12 @@ const getSerieChaptersDetail = async (prevDataSerieGD, dataSerieGD) => {
               )
           );
           if (Object.keys(newChapters).length === 0) {
-            console.log("capitulos se mantienen actualizado");
+            console.log("Capitulos: Se mantienen actualizados");
             return null;
           }
+          //datos de caps a actualizar
+          console.log(newChapters.length," capitulos a actualizar");
+
           serieDetailChapters = await getSerieDetailChapters(
             dataSerieGD.idSerie,
             dataSerieGD.title,
@@ -61,6 +64,7 @@ const getSerieChaptersDetail = async (prevDataSerieGD, dataSerieGD) => {
               serieDetailChapters.idSerie,
               updatedData
             );
+            
             return null;
           }
         }

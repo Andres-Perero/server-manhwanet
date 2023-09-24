@@ -29,7 +29,7 @@ async function findFileInFolder(folderId, filename) {
       nextPageToken = response.data.nextPageToken; // Obtiene el token para la siguiente página
     } while (nextPageToken); // Repite el proceso si hay más páginas
 
-    console.log("Archivo no encontrado: ", filename);
+    //console.log("Archivo no encontrado: ", filename);
     return null;
   } catch (error) {
     console.error("Error al buscar el archivo:", error.message);

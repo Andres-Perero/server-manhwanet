@@ -38,10 +38,7 @@ async function refreshSerieDetails(serieDetail) {
     }
 
     if (isEqual) {
-      console.log(
-        "se mantienen actualizados los detalles de: ",
-        dataSerieGD.title
-      );
+      console.log("Detalles: Se mantienen actualizados")
     }
 
     //guardo ahora los caps de la serie

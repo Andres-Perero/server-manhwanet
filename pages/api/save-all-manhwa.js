@@ -19,8 +19,12 @@ export default async function handler(req, res) {
 
     for (const serie of seriesPages) {
       if (serie.type === "Manhwa") {
-        console.log(serie.title);
+        console.log("---------------------------------");
+        console.log("ID: ", serie.idSerie);
+        console.log("Titulo: ", serie.title);
+        //proceso
         await refreshSerieDetails(serie);
+        console.log("---------------------------------");
       }
     }
     console.log("================================");
