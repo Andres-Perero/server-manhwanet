@@ -18,8 +18,12 @@ export default async function handler(req, res) {
     const seriesPages = await getDataGD(folders.dataSeries, rsc_library.series);
 
     for (const serie of seriesPages) {
-      console.log(serie.title);
+      console.log("---------------------------------");
+      console.log("ID: ", serie.idSerie);
+      console.log("Titulo: ", serie.title);
+      //proceso
       await refreshSerieDetails(serie);
+      console.log("---------------------------------");
     }
     console.log("================================");
     console.log("Series guardadas.");

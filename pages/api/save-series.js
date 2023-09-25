@@ -62,7 +62,7 @@ export default async function handler(req, res) {
             )
         );
         if (newSeries) {
-          console.log(newSeries.length);
+          console.log("Nuevas series: ",newSeries.length);
           await generateIDSeriesSaveGD(newSeries, SeriesPagesGD);
           console.log(
             "mapeo de las series regien agregadas: " + newSeries.length

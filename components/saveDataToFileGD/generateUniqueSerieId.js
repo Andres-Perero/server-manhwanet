@@ -22,6 +22,7 @@ const generateUniqueSerieId = async (serie, datasetSeries) => {
   // If the serie doesn't exist, generate a new unique idSerie
   const newIdSerie = await generateNewIdSerie(datasetSeries);
   if (newIdSerie) {
+    
     let title = serie.title;
     let urlSerie = serie.urlSerie;
     let image = serie.image;
