@@ -16,32 +16,39 @@ export default async function handler(req, res) {
     console.log("Actualizando datos de seccion agregados");
     await downloadChromeExecutableIfNeeded();
     const sectionElements = await scrapeData();
-    await saveDataToFileGD(
-      folders.sections,
-      rsc_library.sections,
-      sectionElements
-    );
+    if (sectionElements) {
+      await saveDataToFileGD(
+        folders.sections,
+        rsc_library.sections,
+        sectionElements
+      );
+    }
+
     let seriesUpdate = [];
-    let sectionUpdate = [];
+    let sectionsUpdate = [];
     if (sectionElements) {
       for (const section of sectionElements) {
         for (const serie of section.articles) {
           console.log("================================================");
           console.log(serie.title);
           const idSerie = await refreshSerieDetails(serie);
-          seriesUpdate.push({ idSerie, ...serie });
+          if (idSerie) {
+            seriesUpdate.push({ idSerie, ...serie });
+          }
+
           console.log("================================================");
         }
         const updatedSection = {
           ...section,
           articles: seriesUpdate,
         };
-        sectionUpdate.push(updatedSection);
+        sectionsUpdate.push(updatedSection);
       }
+
       await saveDataToFileGD(
         folders.sections,
         rsc_library.sections,
-        sectionUpdate
+        sectionsUpdate
       );
       console.log("se completo el scraper de la seccion de recien agregados");
     }

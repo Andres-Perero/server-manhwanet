@@ -59,7 +59,7 @@ const scrapeData = async () => {
               image: img ? img.src : "",
               title: title ? title.textContent.trim() : "",
               timestamp: timestamp ? timestamp.textContent.trim() : "",
-              chapterNumber: chapterNumberElement
+              numChapter: chapterNumberElement
                 ? chapterNumberElement.textContent.trim()
                 : "",
               type: typeElement ? typeElement.textContent.trim() : "",

@@ -19,6 +19,7 @@ const scraperSerieDetailChapter = async (urlChapter, numChapter) => {
         waitUntil: "domcontentloaded",
         timeout: 60000,
       });
+      await page.waitForSelector("#chapter_imgs img");
 
       const scrapedData = await page.evaluate(
         (urlChapter, numChapter) => {
